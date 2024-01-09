@@ -52,7 +52,7 @@ yarn run lint:fix
 
 - `yarn run migrate`: Migrate database schemas for models
 - `yarn run openapi-spec`: Generate OpenAPI spec into a file
-- `yarn run docker:build`: Build a Docker image for this application
+- `yarn run docker:build --network=host`: Build a Docker image for this application
 - `yarn run docker:run`: Run this application inside a Docker container
 
 ## Tests
