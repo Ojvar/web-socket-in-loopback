@@ -1,6 +1,6 @@
-import { BindingKey, injectable } from '@loopback/core';
-import { Server, Socket } from 'socket.io';
-import { asWsHandler, IWsHandler } from '../services';
+import {BindingKey, injectable} from '@loopback/core';
+import {Server, Socket} from 'socket.io';
+import {asWsHandler, IWsHandler} from '../services';
 
 @injectable(asWsHandler)
 export class WsMainHandler implements IWsHandler {
@@ -8,13 +8,13 @@ export class WsMainHandler implements IWsHandler {
     `services.${WsMainHandler.name}`,
   );
 
-  constructor() { }
+  constructor() {}
 
   path = '/';
 
   async onConnection(io: Server, socket: Socket): Promise<void> {
     socket.on('data', data => {
-      console.log('/MAIN, Data received', { id: socket.id, data });
+      console.log('/MAIN, Data received', {id: socket.id, data});
     });
   }
 }

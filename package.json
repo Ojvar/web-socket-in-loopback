@@ -9,7 +9,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
-    "node": "16 || 18 || 20"
+    "node": "16 || 18 || 20 || 21"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -25,8 +25,8 @@
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
     "posttest": "yarn run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && yarn run posttest",
-    "docker:build": "docker build -t socket-io .",
-    "docker:run": "docker run -p 3000:3000 -d socket-io",
+    "docker:build": "docker build . -t socket-io:$(npm pkg get version | xargs echo)",
+    "docker:run": "docker run -p 3000:80 -d socket-io:$(npm pkg get version | xargs echo)",
     "premigrate": "yarn run build",
     "migrate": "node ./dist/migrate",
     "preopenapi-spec": "yarn run build",
@@ -34,7 +34,8 @@
     "prestart": "yarn run rebuild",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
-    "rebuild": "yarn run clean && yarn run build"
+    "rebuild": "yarn run clean && yarn run build",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -65,6 +66,7 @@
     "@types/node": "^16.18.68",
     "eslint": "^8.51.0",
     "source-map-support": "^0.5.21",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "husky": "^8.0.0"
   }
 }

@@ -11,9 +11,9 @@ import {
   LifeCycleObserver,
   lifeCycleObserver,
 } from '@loopback/core';
-import { SocketIoApplication } from '../application';
-import { Server, Socket } from 'socket.io';
-import { HttpErrors } from '@loopback/rest';
+import {SocketIoApplication} from '../application';
+import {Server, Socket} from 'socket.io';
+import {HttpErrors} from '@loopback/rest';
 
 export interface IWsHandler {
   path: string;
@@ -22,11 +22,11 @@ export interface IWsHandler {
 
 export const asWsHandler: BindingTemplate = binding => {
   extensionFor(WebSocketService.EP_NAME)(binding);
-  binding.tag({ namespace: 'handlers' });
+  binding.tag({namespace: 'handlers'});
 };
 
 @lifeCycleObserver('services')
-@injectable({ scope: BindingScope.APPLICATION })
+@injectable({scope: BindingScope.APPLICATION})
 export class WebSocketService implements LifeCycleObserver {
   static EP_NAME = 'SocketServer';
   static BINDING_KEY = BindingKey.create<WebSocketService>(
@@ -37,7 +37,7 @@ export class WebSocketService implements LifeCycleObserver {
     @inject(CoreBindings.APPLICATION_INSTANCE) private app: SocketIoApplication,
     @inject.getter(extensionFilter(WebSocketService.EP_NAME))
     private getHandlers: Getter<IWsHandler[]>,
-  ) { }
+  ) {}
 
   private _ws: Server;
 
@@ -49,7 +49,7 @@ export class WebSocketService implements LifeCycleObserver {
     console.log('WS STARTING');
     const io = new Server(this.app.restServer.httpServer?.server, {
       // path: '/ws/',
-      cors: { origin: '*' },
+      cors: {origin: '*'},
     });
     if (!io) {
       throw new HttpErrors.InternalServerError('Starting web socket failed');
@@ -60,9 +60,8 @@ export class WebSocketService implements LifeCycleObserver {
     const handlers = await this.getHandlers();
     handlers.forEach(handler => {
       console.log('CREATE EXTENSION : ', handler.path);
-      io.of(handler.path).on(
-        'connection',
-        async (socket: Socket) => await handler.onConnection(io, socket),
+      io.of(handler.path).on('connection', async (socket: Socket) =>
+        handler.onConnection(io, socket),
       );
     });
   }
